@@ -1,5 +1,5 @@
 import argparse
-from src import agency, shapes, stops, fares_v1, feed_info
+from src import agency, shapes, stops, fares_v1, metadata
 from src.download import maybe_download_feed
 import os
 
@@ -24,8 +24,8 @@ if feed_downloaded == False:
 
 print("Feed downloaded successfully. Processing...")
 
-feed_info.write_feed_information()
-print("Wrote feed_info.txt")
+metadata.write_information()
+print("Wrote feed information/metadata")
 
 stops.process_stops()
 print("Removed stop code letters from stops.txt")
