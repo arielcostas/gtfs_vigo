@@ -3,11 +3,9 @@ from src.constants import ETAG_FILE, LOCAL_FEED_DIR
 
 
 def write_information() -> None:
-    # TODO: These should be figured out from the feed itself, reading the last calendar.txt expiration date or the last calendar_dates.txt
-    #       expiration date, and the last feed_info.txt expiration date.
-    #       This is a temporary solution until we have a more robust way to handle feed information
-    start_date = "20250630"
-    end_date = "20250707"
+    dates = get_first_last_feed_day()
+    start_date = dates[0]
+    end_date = dates[1]
 
     with open(ETAG_FILE, 'r') as f:
         version = f.read().strip().replace('"', '')
@@ -33,3 +31,44 @@ def write_information() -> None:
 "concello",1,"Concello de Vigo",0,0,1,"https://www.vigo.org","opendata@vigo.org"
 "arielcostas",1,"Ariel Costas Guerrero",0,0,0,"https://github.com/arielcostas/gtfs_vigo","ariel@costas.dev"
 """)
+        
+
+def get_first_last_feed_day() -> tuple[str, str]:
+    """
+    Get the first and last feed day from the feed_info.txt file.
+    """
+    first_date_seen = None
+    last_date_seen = None
+
+    if os.path.exists(os.path.join(LOCAL_FEED_DIR, 'calendar.txt')):
+        with open(os.path.join(LOCAL_FEED_DIR, 'calendar.txt'), 'r') as f:
+            rows = f.readlines()
+        header = [r.strip() for r in rows[0].strip().split(',')]
+        start_date_index = header.index('start_date')
+        end_date_index = header.index('end_date')
+        if len(rows) < 2:
+            print("Warning: calendar.txt is empty or has no data rows.")
+        for row in rows[1:]:
+            start_date = row.strip().split(',')[start_date_index]
+            end_date = row.strip().split(',')[end_date_index]
+            if first_date_seen is None or start_date < first_date_seen:
+                first_date_seen = start_date
+            if last_date_seen is None or end_date > last_date_seen:
+                last_date_seen = end_date
+    
+    if os.path.exists(os.path.join(LOCAL_FEED_DIR, 'calendar_dates.txt')):
+        with open(os.path.join(LOCAL_FEED_DIR, 'calendar_dates.txt'), 'r') as f:
+            rows = f.readlines()
+        header = [r.strip() for r in rows[0].strip().split(',')]
+        date_index = header.index('date')
+        exception_type_index = header.index('exception_type') if 'exception_type' in header else None
+        for row in rows[1:]:
+            if exception_type_index is not None and row.strip().split(',')[exception_type_index] != '1':
+                continue
+            date = row.strip().split(',')[date_index]
+            if first_date_seen is None or date < first_date_seen:
+                first_date_seen = date
+            if last_date_seen is None or date > last_date_seen:
+                last_date_seen = date
+
+    return (first_date_seen, last_date_seen)
