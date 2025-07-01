@@ -1,5 +1,5 @@
 import os
-from src.constants import LOCAL_FEED_DIR
+from src.constants import ETAG_FILE, LOCAL_FEED_DIR
 
 
 def write_feed_information() -> None:
@@ -10,7 +10,8 @@ def write_feed_information() -> None:
     end_date = "20250707"
 
     # TODO: This should be something like the ETag value, or some linear versioning system
-    version = "0.0.1"
+    with open(ETAG_FILE, 'r') as f:
+        version = f.read().strip().replace('"', '')
 
     # If the feed_info.txt already exists, raise an error because upstream might have already created it
     if os.path.exists(os.path.join(LOCAL_FEED_DIR, 'feed_info.txt')):
@@ -18,5 +19,6 @@ def write_feed_information() -> None:
 
 
     with open(os.path.join(LOCAL_FEED_DIR, 'feed_info.txt'), 'w', newline='') as f:
-        f.write(f"feed_publisher_name,feed_publisher_url,feed_lang,default_lang,feed_start_date,feed_end_date,feed_version,feed_contact_email,feed_contact_url{os.linesep}")
-        f.write(f"\"Ariel Costas Guerrero\",https://github.com/arielcostas/gtfs_vigo,es,es,{start_date},{end_date},{version},ariel@costas.dev,https://github.com/arielcostas/gtfs_vigo/issues{os.linesep}")
+        f.write(f"""feed_publisher_name,feed_publisher_url,feed_lang,default_lang,feed_start_date,feed_end_date,feed_version,feed_contact_email,feed_contact_url
+"Ariel Costas Guerrero",https://github.com/arielcostas/gtfs_vigo,es,es,{start_date},{end_date},{version},ariel@costas.dev,https://github.com/arielcostas/gtfs_vigo/issues
+""")

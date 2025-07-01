@@ -15,12 +15,12 @@ This repository contains a curated version of the GTFS data, downloaded from the
 - [X] Adds a `feed_info.txt` file with my contact information and this repository's URL.
 - [X] In the `stops.txt`, fixes the stop codes to match the numeric IDs used in Vitrasa's system, and adds the URL to the real-time information for each stop.
 - [X] Patches the `shapes.txt` file to prevent two `shape_pt_sequence` values with the same `shape_dist_traveled` value, which was causing the validator to fail.
-- [ ] Adds support for [legacy Fares V1](https://gtfs.org/documentation/schedule/examples/fares-v1/)
+- [X] Adds support for [legacy Fares V1](https://gtfs.org/documentation/schedule/examples/fares-v1/)
 - [ ] Adds support for [Fares V2](https://gtfs.org/documentation/schedule/examples/fares/intro/)
 - [ ] Add support for [Transfers](https://gtfs.org/documentation/schedule/examples/transfers/) based on the companies' policies, such as _circuitos neutralizados_ and buses that continue as a different line.
 - [ ] Polish route long names and trip headsigns to make them more user-friendly (TODO: maybe this would be a problem with realtime solutions relying on the trip headsign?)
 
-## Usage
+## Running the pipeline
 
 This repository is set up with [`uv`](https://docs.astral.sh/uv/) to run the `pipeline.py` script, which downloads the GTFS data and processes it. You can run it with:
 
@@ -33,6 +33,10 @@ A command-line option is available to force the download of the GTFS data, even 
 ```bash
 uv run pipeline.py --force-download
 ```
+
+## Using the GTFS data
+
+Until I figure out a way to host the GTFS data in a more user-friendly way (either running the pipeline via GitHub Actions and creating release artifacts, or hosting the GTFS data in a web server), you can download this repository as a ZIP and extract the `feed` directory which contains the GTFS data in the standard format.
 
 ## Contributing
 

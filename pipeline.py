@@ -1,7 +1,6 @@
 import argparse
-from src import agency, shapes, stops
+from src import agency, shapes, stops, fares_v1, feed_info
 from src.download import maybe_download_feed
-from src.feed_info import write_feed_information
 import os
 
 if __name__ != "__main__":
@@ -25,7 +24,7 @@ if feed_downloaded == False:
 
 print("Feed downloaded successfully. Processing...")
 
-write_feed_information()
+feed_info.write_feed_information()
 print("Wrote feed_info.txt")
 
 stops.process_stops()
@@ -36,3 +35,6 @@ print("Added fare_url and phone to agency.txt")
 
 shapes.process_shapes()
 print("Added shape_id and shape_name to shapes.txt")
+
+fares_v1.write_fares_v1()
+print("Wrote fare_attributes.txt and fare_rules.txt")

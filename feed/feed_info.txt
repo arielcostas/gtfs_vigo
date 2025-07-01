@@ -1,2 +1,2 @@
 feed_publisher_name,feed_publisher_url,feed_lang,default_lang,feed_start_date,feed_end_date,feed_version,feed_contact_email,feed_contact_url
-"Ariel Costas Guerrero",https://github.com/arielcostas/gtfs_vigo,es,es,20250630,20250707,0.0.1,ariel@costas.dev,https://github.com/arielcostas/gtfs_vigo/issues
+"Ariel Costas Guerrero",https://github.com/arielcostas/gtfs_vigo,es,es,20250630,20250707,68627cc1-f8ac9d,ariel@costas.dev,https://github.com/arielcostas/gtfs_vigo/issues
